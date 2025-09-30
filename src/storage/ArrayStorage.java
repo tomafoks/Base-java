@@ -35,8 +35,16 @@ public class ArrayStorage {
     public void delete(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                System.arraycopy(storage, i+1, storage, i, size-i-1);
+                System.arraycopy(storage, i + 1, storage, i, size - i - 1);
                 size--;
+            }
+        }
+    }
+
+    public void update(Resume r) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(r.getUuid())) {
+                storage[i].setUuid("update test");
             }
         }
     }
