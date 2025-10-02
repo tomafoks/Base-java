@@ -1,51 +1,53 @@
 package storage;
 
+import java.util.Arrays;
+
 import model.Resume;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10000;
+    Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void save(Resume r) {
-        if (size < storage.length) {
+        if (size >= storage.length) {
+            System.out.println("Stack Overflow");
+        } else if (indexOfResume(r.getUuid()) != -1) {
+            System.out.println("Resume" + r.getUuid() + "already exist!");
+        } else {
             storage[size] = r;
             size++;
         }
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
+        int index = indexOfResume(uuid);
+        if (index != -1) {
+            return storage[index];
         }
         return null;
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, size - i - 1);
-                size--;
-            }
+        int index = indexOfResume(uuid);
+        if (index != -1) {
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            size--;
         }
     }
 
     public void update(Resume r) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(r.getUuid())) {
-                storage[i].setUuid("update test");
-            }
+        int index = indexOfResume(r.getUuid());
+        if (index != -1) {
+            storage[index].setUuid("update test");
         }
     }
 
@@ -53,12 +55,19 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        var newResume = new Resume[size];
-        System.arraycopy(storage, 0, newResume, 0, size);
-        return newResume;
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     public int size() {
         return size;
+    }
+
+    private int indexOfResume(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
