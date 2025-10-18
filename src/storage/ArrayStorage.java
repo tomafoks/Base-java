@@ -32,6 +32,8 @@ public class ArrayStorage {
         int index = searchIndexOfResume(uuid);
         if (index != -1) {
             return storage[index];
+        } else {
+            resumeNotFoundMessage(uuid);
         }
         return null;
     }
@@ -41,6 +43,8 @@ public class ArrayStorage {
         if (index != -1) {
             System.arraycopy(storage, index + 1, storage, index, size - index - 1);
             size--;
+        } else {
+            resumeNotFoundMessage(uuid);
         }
     }
 
@@ -48,6 +52,8 @@ public class ArrayStorage {
         int index = searchIndexOfResume(r.getUuid());
         if (index != -1) {
             storage[index].setUuid("update test");
+        } else {
+            resumeNotFoundMessage(r.getUuid());
         }
     }
 
@@ -69,5 +75,9 @@ public class ArrayStorage {
             }
         }
         return -1;
+    }
+
+    private void resumeNotFoundMessage(String uuid) {
+        System.out.println("Resume " + uuid + " not found!");
     }
 }
