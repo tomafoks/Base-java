@@ -20,7 +20,7 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (size >= storage.length) {
             System.out.println("Stack Overflow");
-        } else if (indexOfResume(r.getUuid()) != -1) {
+        } else if (searchIndexOfResume(r.getUuid()) != -1) {
             System.out.println("Resume" + r.getUuid() + "already exist!");
         } else {
             storage[size] = r;
@@ -29,7 +29,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = indexOfResume(uuid);
+        int index = searchIndexOfResume(uuid);
         if (index != -1) {
             return storage[index];
         }
@@ -37,7 +37,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int index = indexOfResume(uuid);
+        int index = searchIndexOfResume(uuid);
         if (index != -1) {
             System.arraycopy(storage, index + 1, storage, index, size - index - 1);
             size--;
@@ -45,7 +45,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int index = indexOfResume(r.getUuid());
+        int index = searchIndexOfResume(r.getUuid());
         if (index != -1) {
             storage[index].setUuid("update test");
         }
@@ -62,7 +62,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int indexOfResume(String uuid) {
+    private int searchIndexOfResume(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
