@@ -5,7 +5,7 @@ import java.util.Arrays;
 import model.Resume;
 
 public class AbstractArrayStorage implements Storage {
-    
+
     private static final int STORAGE_LIMIT = 10000;
     Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
@@ -15,6 +15,7 @@ public class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
+    @Override
     public void save(Resume r) {
         if (size >= storage.length) {
             System.out.println("Stack Overflow");
@@ -26,6 +27,7 @@ public class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
     public Resume get(String uuid) {
         int index = searchIndexOfResume(uuid);
         if (index != -1) {
@@ -36,6 +38,7 @@ public class AbstractArrayStorage implements Storage {
         return null;
     }
 
+    @Override
     public void delete(String uuid) {
         int index = searchIndexOfResume(uuid);
         if (index != -1) {
@@ -46,6 +49,7 @@ public class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
     public void update(Resume r) {
         int index = searchIndexOfResume(r.getUuid());
         if (index != -1) {
@@ -58,10 +62,12 @@ public class AbstractArrayStorage implements Storage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
+    @Override
     public int size() {
         return size;
     }
