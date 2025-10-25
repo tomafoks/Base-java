@@ -4,12 +4,15 @@ import java.util.Arrays;
 
 import model.Resume;
 
-public class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage implements Storage {
 
     private static final int STORAGE_LIMIT = 10000;
     Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
+    public abstract void doInsertResume(Resume r, int index);
+
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -22,7 +25,7 @@ public class AbstractArrayStorage implements Storage {
         } else if (searchIndexOfResume(r.getUuid()) != -1) {
             System.out.println("Resume" + r.getUuid() + "already exist!");
         } else {
-            storage[size] = r;
+            doInsertResume(r, size);
             size++;
         }
     }
